@@ -20,7 +20,7 @@
 
         <button type="submit" class="btn btn-success btn-form" id="find_button">Найти</button>
       </form>
-      <div style="margin-top:100px; margin-bottom: -80px">
+      <div style="margin-top:100px">
         <a class="btn btn-success" th:href="@{course/new}">New course</a>
       </div>
       <table class="table">
@@ -43,7 +43,7 @@
               <form th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
                 <button type="submit" class="btn btn-success btn-table" id="delete_button">Удалить</button>
               </form>
-<!--              <button type="button" class="btn btn-success btn-table" id="assign_button">Назначить</button>-->
+              <button type="button" class="btn btn-success btn-table" id="assign_button">Назначить</button>
             </td>
           </tr>
         </tbody>
