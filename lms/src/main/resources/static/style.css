@@ -17,8 +17,8 @@ label {
 }
 
 table {
+    margin-top: 0;
     color: black;
-    margin-top: 100px;
 }
 
 button.btn.btn-success.btn-table {

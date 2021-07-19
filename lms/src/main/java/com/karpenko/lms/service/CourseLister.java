@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,8 +20,31 @@ public class CourseLister {
         this.repository = repository;
     }
 
+    public List<Course> findAll() {
+        return repository.findAll();
+    }
+
+    public Optional<Course> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    public void save(Course course) {
+        repository.save(course);
+    }
+
+    public void delete(Long id) {
+        repository.delete(id);
+    }
+
     public List<Course> coursesByAuthor(String name) {
         List<Course> allCourses = repository.findAll();
         return allCourses.stream().filter(course -> course.getAuthor().equals(name)).collect(Collectors.toList());
+    }
+
+    public List<Course> findByTitleWithPrefix(String prefix) {
+        List<Course> allCourses = repository.findAll();
+        return allCourses.stream()
+                .filter(course -> course.getTitle().toLowerCase().contains(prefix.toLowerCase()))
+                .collect(Collectors.toList());
     }
 }
