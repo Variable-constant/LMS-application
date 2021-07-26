@@ -34,52 +34,62 @@
         <button type="submit" class="btn btn-success btn-form" id="save_button">Сохранить</button>
       </form>
       <br>
-      <p style="margin-top: 80px; margin-bottom: 5px"><u>Новый урок</u></p>
-      <table class="table" style="margin-top: 0">
-        <thead>
-          <tr class="table-success">
-            <th scope="col">id</th>
-            <th scope="col">Название</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="table-success">
-            <th scope="row">1</th>
-            <td>Course name</td>
-            <td><button type="button" class="btn btn-success" id="delete_button">Удалить</button></td>
-          </tr>
-          <tr class="table-success">
-            <th scope="row"></th>
-            <td>No data</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <div th:unless="${course.lessons == null}">
+        <div style="margin-top: 80px; margin-bottom: 5px">
+          <a th:href="@{/lesson/new(course_id = ${course.id})}"><u>Новый урок</u></a>
+        </div>
+        <table class="table" style="margin-top: 0">
+          <thead>
+            <tr class="table-success">
+              <th scope="col">id</th>
+              <th scope="col">Название</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-success" th:unless="${course.lessons.isEmpty()}" th:each="lesson: ${course.lessons}">
+              <th th:text="${lesson.id}">1</th>
+              <td>
+                <a th:text="${lesson.title}" th:href="@{/lesson/{id}(id = ${lesson.id})}">Course name</a>
+              </td>
+              <td>
+                <form th:method="delete" th:action="@{/lesson/{id}(id = ${lesson.id}, course_id = ${course.id})}">
+                  <button type="submit" class="btn btn-success btn-table" id="delete_button">Удалить</button>
+                </form>
+              </td>
+            </tr>
+            <tr class="table-success" th:if="${course.lessons.isEmpty()}">
+              <td colspan="3">No data</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <p>Пользователи, связанные с курсом</p>
+        <p>Пользователи, связанные с курсом</p>
 
-      <table class="table" style="margin-top: 0">
-        <thead>
+        <table class="table" style="margin-top: 0">
+          <thead>
           <tr class="table-success">
             <th scope="col">id</th>
             <th scope="col">Имя пользователя</th>
             <th scope="col">Action</th>
           </tr>
-        </thead>
-        <tbody>
-          <tr class="table-success">
-            <th scope="row">1</th>
-            <td>Course name</td>
-            <td><button type="button" class="btn btn-success" id="remove-button">Снять с курса</button></td>
+          </thead>
+          <tbody>
+          <tr class="table-success" th:unless="${course.users.isEmpty()}" th:each="user: ${course.users}">
+            <th th:text="${user.id}">1</th>
+            <td th:text="${user.username}">Имя пользователя</td>
+            <td>
+              <form th:method="delete" th:action="@{/course/{id}/unassign(id = ${course.id}, userId = ${user.id})}">
+                <button type="submit" class="btn btn-success btn-table" id="delete_button2">Удалить</button>
+              </form>
+            </td>
           </tr>
-          <tr class="table-success">
-            <th scope="row"></th>
-            <td>No data</td>
-            <td></td>
+          <tr class="table-success" th:if="${course.users.isEmpty()}">
+            <td colspan="3">No data</td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </body>
 </html>

@@ -33,7 +33,7 @@ public class CourseLister {
     }
 
     public void delete(Long id) {
-        repository.delete(id);
+        repository.delete(repository.getById(id));
     }
 
     public List<Course> coursesByAuthor(String name) {
@@ -42,9 +42,6 @@ public class CourseLister {
     }
 
     public List<Course> findByTitleWithPrefix(String prefix) {
-        List<Course> allCourses = repository.findAll();
-        return allCourses.stream()
-                .filter(course -> course.getTitle().toLowerCase().contains(prefix.toLowerCase()))
-                .collect(Collectors.toList());
+        return repository.findByTitleLike(prefix.toLowerCase() + "%");
     }
 }

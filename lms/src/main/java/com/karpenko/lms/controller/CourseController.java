@@ -2,8 +2,10 @@ package com.karpenko.lms.controller;
 
 import com.karpenko.lms.controller.exceptions.NotFoundException;
 import com.karpenko.lms.domain.Course;
+import com.karpenko.lms.domain.User;
 import com.karpenko.lms.service.CourseLister;
 import com.karpenko.lms.service.StatisticsCounter;
+import com.karpenko.lms.service.UserLister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,12 @@ import java.util.List;
 public class CourseController {
     private final CourseLister courseLister;
     private final StatisticsCounter statisticsCounter;
+    private final UserLister userLister;
 
     @Autowired
-    public CourseController(CourseLister courseLister, StatisticsCounter statisticsCounter) {
+    public CourseController(CourseLister courseLister, UserLister userLister, StatisticsCounter statisticsCounter) {
         this.courseLister = courseLister;
+        this.userLister = userLister;
         this.statisticsCounter = statisticsCounter;
     }
 
@@ -60,6 +64,37 @@ public class CourseController {
     public String deleteCourse(@PathVariable("id") Long id) {
         courseLister.delete(id);
         return "redirect:/course";
+    }
+
+    @GetMapping("/{id}/assign")
+    public String getAssignCourse(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("courseId", id);
+        model.addAttribute("users", userLister.findAll());
+        return "assign_course";
+    }
+
+    @PostMapping("/{courseId}/assign")
+    public String assignUserForm(@PathVariable("courseId") Long courseId,
+                                 @RequestParam("userId") Long userId) {
+        User user = userLister.findById(userId).orElseThrow(NotFoundException::new);
+        Course course = courseLister.findById(courseId).orElseThrow(NotFoundException::new);
+        course.getUsers().add(user);
+        user.getCourses().add(course);
+        courseLister.save(course);
+        return String.format("redirect:/course/%d", courseId);
+    }
+
+    @DeleteMapping("/{courseId}/unassign")
+    public String unassignUser(@PathVariable("courseId") Long courseId,
+                               @RequestParam("userId") Long userId) {
+        User user = userLister.findById(userId)
+                .orElseThrow(NotFoundException::new);
+        Course course = courseLister.findById(courseId)
+                .orElseThrow(NotFoundException::new);
+        user.getCourses().remove(course);
+        course.getUsers().remove(user);
+        courseLister.save(course);
+        return String.format("redirect:/course/%d", courseId);
     }
 
     @ExceptionHandler
