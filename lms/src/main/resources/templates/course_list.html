@@ -20,7 +20,7 @@
 
         <button type="submit" class="btn btn-success btn-form" id="find_button">Найти</button>
       </form>
-      <div style="margin-top:100px; margin-bottom: -80px">
+      <div style="margin-top:100px">
         <a class="btn btn-success" th:href="@{course/new}">New course</a>
       </div>
       <table class="table">
@@ -33,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table-success" th:each="course : ${courses}">
+          <tr class="table-success" th:unless="${courses.empty}" th:each="course : ${courses}">
             <td th:text="${course.id}">1</td>
             <td>
               <a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a>
@@ -43,8 +43,13 @@
               <form th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
                 <button type="submit" class="btn btn-success btn-table" id="delete_button">Удалить</button>
               </form>
-<!--              <button type="button" class="btn btn-success btn-table" id="assign_button">Назначить</button>-->
+              <form th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">
+                <button type="submit" class="btn btn-success btn-table" id="assign_button">Назначить</button>
+              </form>
             </td>
+          </tr>
+          <tr class="table-success" th:if="${courses.empty}" >
+            <td colspan="4">No data</td>
           </tr>
         </tbody>
       </table>

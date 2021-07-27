@@ -12,21 +12,21 @@
     <div class="container">
       <header th:replace="fragments/header :: header"></header>
       <h1>Создать урок</h1>
-      <form>
+      <form th:object="${lesson}" th:method="post" th:action="@{/lesson}">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{courseId}">
+
         <div class="mb-3">
-          <label for="name">Название урока</label>
-          <input type="text" class="form-control" id="name" name="name">
+          <label for="title">Название урока</label>
+          <input type="text" class="form-control" id="title" th:field="*{title}">
         </div>
         <div class="mb-3">
-          <label for="name">Содержание урока</label>
-          <p><textarea class="form-control" id="floatingTextarea2" rows="10"></textarea></p>
+          <label for="text">Содержание урока</label>
+          <p><textarea class="form-control" id="text" rows="10" th:field="*{text}"></textarea></p>
         </div>
+        <br>
+        <button type="submit" class="btn btn-success btn-form" id="save_button">Сохранить</button>
       </form>
-
-    
-    <br>
-    <button type="submit" class="btn btn-success btn-form" id="save_button">Сохранить</button>
     </div>
-
   </body>
 </html>
