@@ -1,0 +1,10 @@
+CREATE INDEX idx_courses_id              ON courses          (id);
+CREATE INDEX idx_courses_title           ON courses          (title);
+CREATE INDEX idx_courses_category        ON courses          (category);
+CREATE INDEX idx_users_id                ON users            (id);
+CREATE INDEX idx_users_name              ON users            (full_name);
+CREATE INDEX idx_enrolled_courses_course ON enrolled_courses (course_id);
+CREATE INDEX idx_enrolled_courses_user   ON enrolled_courses (user_id);
+CREATE INDEX idx_modules_course          ON modules          (course_id);
+CREATE INDEX idx_topics_module           ON topics           (module_id);
+CREATE INDEX idx_tasks_topic             ON tasks            (topic_id);
