@@ -13,20 +13,28 @@
     <div class="container">
       <header th:replace="fragments/header :: header"></header>
       <h1>Информация о пользователе</h1>
-      <form action="">
+      <form th:object="${user}" th:method="post" th:action="@{/admin/user}">
+        <input type="hidden" th:field="*{id}">
+
         <div class="mb-3">
-          <label for="usr">Имя пользователя</label>
-          <input type="text" class="form-control" id="usr" name="usr">
+          <label for="username">Имя пользователя</label>
+          <input type="text" class="form-control" id="username" name="username" th:field="*{username}">
         </div>
 
         <div class="mb-3">
-          <label for="pwd">Пароль</label>
-          <input type="password" class="form-control" id="pwd" name="password">
-          <p style="color: grey;">Пароль не может быть пустым</p>
+          <label for="password">Пароль</label>
+          <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
+          <p style="color: grey;" class="validation-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Пароль не может быть пустым</p>
         </div>
 
         <div class="mb-3">
-          <p><textarea class="form-control" id="floatingTextarea2" rows="10"></textarea></p>
+          <label for="roles">Roles</label>
+          <select multiple class="form-control" id="roles" th:field="*{roles}" required>
+            <option th:each="role : ${roles}"
+                    th:text="${role.name}"
+                    th:value="${role.id}"
+                    th:selected="${user.roles?.contains(role)}"></option>
+          </select>
         </div>
 
         <button type="submit" class="btn btn-success btn-form" id="save_button">Создать</button>

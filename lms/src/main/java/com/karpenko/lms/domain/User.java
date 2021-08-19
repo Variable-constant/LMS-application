@@ -13,6 +13,9 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
+    @Column
+    private String password;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +25,7 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private Set<Course> courses;
+
+    @ManyToMany
+    private Set<Role> roles;
 }

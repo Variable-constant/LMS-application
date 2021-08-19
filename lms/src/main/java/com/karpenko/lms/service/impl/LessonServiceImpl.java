@@ -1,24 +1,20 @@
-package com.karpenko.lms.service;
+package com.karpenko.lms.service.impl;
 
-import com.karpenko.lms.dao.CourseRepository;
 import com.karpenko.lms.dao.LessonRepository;
-import com.karpenko.lms.domain.Course;
 import com.karpenko.lms.domain.Lesson;
+import com.karpenko.lms.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class LessonLister {
+public class LessonServiceImpl implements LessonService {
     private final LessonRepository repository;
 
     @Autowired
-    public LessonLister(LessonRepository repository) {
+    public LessonServiceImpl(LessonRepository repository) {
         this.repository = repository;
     }
 
